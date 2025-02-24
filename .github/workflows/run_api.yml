@@ -29,4 +29,4 @@ jobs:
 
       - name: Call API
         run: |
-          curl "http://localhost:5000/predict_price?symbol=BTCUSDT&interval=4h"
+          curl "https://probable-umbrella-64qr6gj55wcjg5-5000.app.github.dev/predict_price?symbol=BTCUSDT&interval=4h"
