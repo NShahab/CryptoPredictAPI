@@ -5,6 +5,7 @@ import numpy as np
 import joblib
 from tensorflow.keras.models import load_model
 from flask import Flask, request, jsonify
+import os
 
 def get_binance_data(symbol, interval, limit=50):
     url = "https://api.binance.com/api/v3/klines"
@@ -59,8 +60,10 @@ def predict_price(df, model, scaler):
 app = Flask(__name__)
 
 # Load trained model and correct scaler
-model = load_model('models\model_LSTM_4h.keras')
-scaler = joblib.load('models\scaler_4h.pkl')
+model_path = os.path.join(os.path.dirname(__file__), 'models', 'model_LSTM_4h.keras')
+model = load_model(model_path)
+scaler_path = os.path.join(os.path.dirname(__file__), 'models', 'scaler_4h.pkl')
+scaler = joblib.load(scaler_path)
 
 @app.route('/predict_price', methods=['GET'])
 def fetch_and_predict():
