@@ -59,8 +59,8 @@ def predict_price(df, model, scaler):
 app = Flask(__name__)
 
 # Load trained model and correct scaler
-model = load_model('best_model.keras')
-scaler = joblib.load('scaler_4h.pkl')
+model = load_model('models\model_LSTM_4h.keras')
+scaler = joblib.load('models\scaler_4h.pkl')
 
 @app.route('/predict_price', methods=['GET'])
 def fetch_and_predict():
