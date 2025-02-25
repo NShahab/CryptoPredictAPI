@@ -65,30 +65,21 @@ model = load_model(model_path)
 scaler_path = os.path.join(os.path.dirname(__file__), 'models', 'scaler_4h.pkl')
 scaler = joblib.load(scaler_path)
 
-# Route برای صفحه اصلی
-@app.route('/')
-def home():
-    return "Welcome to CryptoPredictAPI!"
-
-# Route برای پیش‌بینی قیمت
 @app.route('/predict_price', methods=['GET'])
 def fetch_and_predict():
-    try:
-        symbol = request.args.get('symbol', 'BTCUSDT')
-        interval = request.args.get('interval', '4h')
-        
-        df = get_binance_data(symbol, interval)
-        df = add_indicators(df)
-        
-        predicted_price = predict_price(df, model, scaler)
-        
-        return jsonify({
-            "symbol": symbol,
-            "interval": interval,
-            "predicted_price": predicted_price
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    symbol = request.args.get('symbol', 'BTCUSDT')
+    interval = request.args.get('interval', '4h')
+    
+    df = get_binance_data(symbol, interval)
+    df = add_indicators(df)
+    
+    predicted_price = predict_price(df, model, scaler)
+    
+    return jsonify({
+        "symbol": symbol,
+        "interval": interval,
+        "predicted_price": predicted_price
+    })
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(debug=True)
