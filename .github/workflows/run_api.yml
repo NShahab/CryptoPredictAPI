@@ -28,4 +28,4 @@ jobs:
 
       - name: Call API
         run: |
-          curl "https://fictional-space-zebra-9q4vpwgwp7gfp4xx-5000.app.github.dev/predict_price?symbol=BTCUSDT&interval=4h"
+          curl "https://vigilant-computing-machine-j4w6x9p9x4pfq556-5000.app.github.dev/predict_price?symbol=BTCUSDT&interval=4h"
