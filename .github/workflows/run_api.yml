@@ -1,9 +1,8 @@
-name: Run API on Push
+name: Run API on Schedule
 
 on:
-  push:
-    branches:
-      - main  # Here, enter the name of the branch you want to run on.
+  schedule:
+    - cron: '0 * * * *'  # This cron expression means every hour at minute 0
 
 jobs:
   run-api:
@@ -29,4 +28,4 @@ jobs:
 
       - name: Call API
         run: |
-          curl "https://probable-umbrella-64qr6gj55wcjg5-5000.app.github.dev/predict_price?symbol=BTCUSDT&interval=4h"
+          curl "https://fictional-space-zebra-9q4vpwgwp7gfp4xx-5000.app.github.dev/predict_price?symbol=BTCUSDT&interval=4h"
