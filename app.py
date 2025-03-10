@@ -5,7 +5,11 @@ import numpy as np
 import joblib
 from tensorflow.keras.models import load_model
 from flask import Flask, request, jsonify
+from flask_cors import CORS  # اضافه کردن CORS
 import os
+
+app = Flask(__name__)
+CORS(app)  # فعال‌سازی CORS برای کل API
 
 def get_binance_data(symbol, interval, limit=50):
     url = "https://api.binance.com/api/v3/klines"
@@ -39,6 +43,7 @@ def add_indicators(df):
     df['SMA'] = df['close'].rolling(window=14).mean()
     df['RSI'] = 100 - (100 / (1 + (df['close'].diff(1).clip(lower=0).rolling(14).mean() / 
                                       df['close'].diff(1).clip(upper=0).abs().rolling(14).mean())))
+
     df['Bollinger_Upper'] = df['close'].rolling(20).mean() + (df['close'].rolling(20).std() * 2)
     df.dropna(inplace=True)
     return df
@@ -57,9 +62,7 @@ def predict_price(df, model, scaler):
     )[:, 0]
     return predicted_price[0]
 
-app = Flask(__name__)
-
-# Load trained model and correct scaler
+# Load trained model and scaler
 model_path = os.path.join(os.path.dirname(__file__), 'models', 'model_LSTM_4h.keras')
 model = load_model(model_path)
 scaler_path = os.path.join(os.path.dirname(__file__), 'models', 'scaler_4h.pkl')
@@ -83,4 +86,3 @@ def fetch_and_predict():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
